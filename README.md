@@ -1,5 +1,6 @@
+# Data Science Skills
 
-
+**Team:** Jered Ataky, Zhouxin Shi, Irene Jacob
 
 ## Project Overview:
 
