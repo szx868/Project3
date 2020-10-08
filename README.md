@@ -4,14 +4,32 @@
 
 ## Project Overview:
 
-This is a project for your entire class section to work on together, since being able to work effectively on a virtual team is a key “soft skill” for data scientists. Please note especially the requirement about making a presentation during our first meetup after the project is due.
+In this project, our goal is to be able to answer to the question:
 
-W. Edwards Deming said, “In God we trust, all others must bring data.” Please use data to answer the question, “Which are the most valued data science skills?” Consider your work as an exploration; there is not necessarily a “right answer.”
+“Which are the most valued data science skills?” 
 
-## Tools Used:
+As it is a group work and each member living in different time zone, we have 
+established a great way of communication, code sharing, and documentation to
+enable us to be succesful and efficient while working virtually together.
+The tools used and data source explored are described below: 
 
-The tool used for code sharing is Github. For communication Slack and Teams are used. 
+## Tools:
+
+We are using Github for code sharing. Github serves us also for data repository 
+although we intend to use MySQL (and/or AWS) and the project progresses.
+In the other, Slack and Microsoft Teams are used for communication as well
+project documentation.
 
 ## Data Source:
 
+The data set we are working can be found in the link below:
+
 https://www.kaggle.com/elroyggj/indeed-dataset-data-scientistanalystengineer
+
+
+We also have it loaded as csv in our Github repository for project development:
+
+(https://github.com/szx868/Project3)
+
+
+## ER Diagram
