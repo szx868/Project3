@@ -1,6 +1,6 @@
 # Data Science Skills
 
-**Team:** Jered Ataky, Zhouxin Shi, Irene Jacob
+**Team Triple J:** Jered Ataky, Zhouxin Shi, Irene Jacob
 
 ## Project Overview:
 
