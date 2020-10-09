@@ -16,7 +16,7 @@ The tools used and data source explored are described below:
 ## Tools:
 
 We are using Github for code sharing. Github serves us also for data repository 
-although we intend to use MySQL (and/or AWS) and the project progresses.
+although we intend to use MySQL (and/or AWS) as the project progresses.
 In the other, Slack and Microsoft Teams are used for communication as well
 project documentation.
 
