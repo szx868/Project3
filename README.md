@@ -10,7 +10,7 @@ In this project, our goal is to be able to answer to the question:
 
 As it is a group work and each member living in different time zone, we have 
 established a great way of communication, code sharing, and documentation to
-enable us to be succesful and efficient while working virtually together.
+enable us to be successful and efficient while working virtually together.
 The tools used and data source explored are described below: 
 
 ## Tools:
@@ -33,3 +33,5 @@ We also have it loaded as csv in our Github repository for project development:
 
 
 ## ER Diagram
+![](Entity_Relationship_Diagram.jpg "Image Title")
+
