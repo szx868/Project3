@@ -35,3 +35,25 @@ We also have it loaded as csv in our Github repository for project development:
 ## ER Diagram
 ![](Entity_Relationship_Diagram.jpg "Image Title")
 
+
+
+## Work process & responsabilities
+
+\begin{center}
+\begin{tabular}{lr}
+  \hline
+\textit{Process}         & \textit{Team Members} \\
+  \hline
+1. Data collection    & Zhouxin \\
+2. Database storage/structure    & Zhouxin, Jered\\
+3. Data Transformation (Cleaning/ tidying data)    & Jered, Irene \\
+4. Data Analysis    & Jered, Zhouxin, Irene \\
+5. Visualization         & Irene
+5. Review and summary    & Jered \\
+6. Conclusion and presentation    & Jered, Zhouxin, Irene \\
+
+   \hline
+\end{tabular}
+\end{center}
+
+
