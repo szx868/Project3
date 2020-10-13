@@ -1,32 +1,84 @@
 ---
 title: "Project3"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Introduction
+# Data Science Skills
 
-In God we trust, all others must bring data.” Please use data to answer the question,
-“Which are the most valued data science skills?” Consider your work as an exploration; there is not necessarily a “right
-answer.”
+**Team Triple J:** Jered Ataky, Zhouxin Shi, Irene Jacob
 
-data set from https://www.kaggle.com/elroyggj/indeed-dataset-data-scientistanalystengineer
+## Project Overview:
+
+In this project, our goal is to be able to answer to the question:
+
+“Which are the most valued data science skills?” 
+
+As it is a group work and each member living in different time zone, we have 
+established a great way of communication, code sharing, and documentation to
+enable us to be successful and efficient while working virtually together.
+The tools used and data source explored are described below: 
+
+## Tools:
+
+We are using Github for code sharing. Github serves us also for data repository 
+although we intend to use MySQL (and/or AWS) as the project progresses.
+In the other, Slack and Microsoft Teams are used for communication as well
+project documentation.
+
+## Data Source:
+
+The data set we are working can be found in the link below:
+
+https://www.kaggle.com/elroyggj/indeed-dataset-data-scientistanalystengineer
 
 
+We also have it loaded as csv in our Github repository for project development:
 
-```{r cars}
+(https://github.com/szx868/Project3)
+
+## Libraries
+
+```{r}
+library(tidyverse)
+library(kableExtra)
+
 
 ```
 
-## Including Plots
+## ER Diagram
+![](Entity_Relationship_Diagram.jpg "Image Title")
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+
+## Work process & responsabilities
+
+```{r}
+
+Process <- c('Data Collection', 'Database Storage & Structure ',
+             'Data Transformation (Cleaning & Tidying data)',
+             'Data Analysis', 'Visualization',
+             'Review & Summary','Conclusion and Presentation')
+
+Team <- c('Zhouxin', 'Zhouxin & Jered', 'Jered & Irene', 
+          'Jered, Zhouxin, Irene', 'Irene', 'Jered',
+          'Jered, Zhouxin, Irene')
+
+df_team <- data.frame(Process, Team)
+
+names(df_team) <- c('Process', 'Team Members')
+
+df_team %>%
+  kbl(caption = "Work Process & Responsabilities") %>%
+  kable_material(c("striped", "hover")) %>%
+  row_spec(0, color = "indigo")
+
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
