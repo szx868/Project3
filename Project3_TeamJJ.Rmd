@@ -1,5 +1,6 @@
 ---
-title: "Project3"
+title: "DATA 606 Project 3"
+author: " Team Triple J: Jered Ataky, Zhouxin Shi, Irene Jacob"
 output:
   html_document: default
   pdf_document: default
@@ -136,15 +137,14 @@ glimpse(raw_data)
 
 # Remove bracket in skill
 
-data_1 <- data %>%
+data_raw <- raw_data %>%
   separate(Skill, c("Alt", "new_skills"), sep = "^[\\[]", remove = TRUE, convert = FALSE) %>%
   separate(new_skills, c("Skill", "Alt"), sep = "[\\]]$", remove = TRUE, convert = FALSE)
 
-data_1 <- data_1[1:3]
+data <- data_raw [c(1:3, 5)]
+head(data, 2)
 
 ```
-
-
 
 ### Clean description
 
