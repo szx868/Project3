@@ -26,8 +26,8 @@ The tools used and data source explored are described below:
 
 ## Tools:
 
-We are using Github for code sharing. Github serves us also for data repository 
-although we intend to use MySQL (and/or AWS) as the project progresses.
+We are using Github for code sharing, and Google Cloud Platform (GCP)
+for data base and storage.
 In the other, Slack and Microsoft Teams are used for communication as well
 project documentation.
 
@@ -42,27 +42,9 @@ We also have it loaded as csv in our Github repository for project development:
 
 (https://github.com/szx868/Project3)
 
-## Libraries
-
-```{r}
-library(tidyverse)
-library(kableExtra)
-library(rvest)
-library(stringr)
-library(xtable)
-library(tm)
-library(RMySQL)
-library(PGRdup)
-library(broom)
-library(googleCloudStorageR)
-library(readr)
-
-```
 
 ## ER Diagram
 ![](Entity_Relationship_Diagram.jpg "Image Title")
-
-
 
 ## Work process & responsabilities
 
@@ -89,35 +71,63 @@ df_team %>%
 
 ```
 
-** Load Data from Cloud storage: this will be the final goal**
+## Approach
 
 
+<style>
+div.aquamarine { background-color:#7fffd4; border-radius: 10px; padding: 5px;}
+</style>
+<div class = "aquamarine">
 
-## Load data from database
-
-```{r MSQL}
-
-# Access mysql: this is temporary
-
-mydb <-dbConnect(RMariaDB::MariaDB(), user='root', password='Ja07071990', dbname ='ds_skills', host = '23.251.154.21')
-
-```
+We target a data set in kaggle and decided to work on.
+First, we create a database in MySQL and link it to our GCP data base to
+allow each one to access it locally and make any change if necessary.
+we reside our data in both the GCP data base and storage we created.
+At this point, we load the data from the cloud and start our analysis.
 
 
-```{r}
-# Store the result in a dataframe movies
+</div> \hfill\break
 
-data <- dbGetQuery(mydb, "SELECT * FROM indeed_job_dataset7")
-```
 
+## Libraries
 
 ```{r}
-head(data, 2)
+library(tidyverse)
+library(kableExtra)
+library(rvest)
+library(stringr)
+library(xtable)
+library(tm)
+library(RMySQL)
+library(PGRdup)
+library(broom)
+library(googleCloudStorageR)
+library(readr)
+library(cloudml)
+
+```
+
+
+## Load the data
+
+```{r}
+
+raw_data <-read.csv("https://storage.googleapis.com/triplej_project3/indeed_job_dataset7.csv")
+
+```
+
+```{r}
+# data insight
+
+glimpse(raw_data)
 
 
 ```
+
+
 
 ## Data Cleansing
+
 
 
 ### Clean skill
@@ -131,7 +141,6 @@ data_1 <- data %>%
   separate(new_skills, c("Skill", "Alt"), sep = "[\\]]$", remove = TRUE, convert = FALSE)
 
 data_1 <- data_1[1:3]
-
 
 ```
 
@@ -150,6 +159,9 @@ data_1 <- data_1[1:3]
 
 
 ## Futur Work
+
+
+
 
 ## Findings
 
