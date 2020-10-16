@@ -47,7 +47,15 @@ We also have it loaded as csv in our Github repository for project development:
 ```{r}
 library(tidyverse)
 library(kableExtra)
-
+library(rvest)
+library(stringr)
+library(xtable)
+library(tm)
+library(RMySQL)
+library(PGRdup)
+library(broom)
+library(googleCloudStorageR)
+library(readr)
 
 ```
 
@@ -80,5 +88,72 @@ df_team %>%
 
 
 ```
+
+** Load Data from Cloud storage: this will be the final goal**
+
+
+
+## Load data from database
+
+```{r MSQL}
+
+# Access mysql: this is temporary
+
+mydb <-dbConnect(RMariaDB::MariaDB(), user='root', password='Ja07071990', dbname ='ds_skills', host = '23.251.154.21')
+
+```
+
+
+```{r}
+# Store the result in a dataframe movies
+
+data <- dbGetQuery(mydb, "SELECT * FROM indeed_job_dataset7")
+```
+
+
+```{r}
+head(data, 2)
+
+
+```
+
+## Data Cleansing
+
+
+### Clean skill
+
+```{r}
+
+# Remove bracket in skill
+
+data_1 <- data %>%
+  separate(Skill, c("Alt", "new_skills"), sep = "^[\\[]", remove = TRUE, convert = FALSE) %>%
+  separate(new_skills, c("Skill", "Alt"), sep = "[\\]]$", remove = TRUE, convert = FALSE)
+
+data_1 <- data_1[1:3]
+
+
+```
+
+
+
+### Clean description
+
+
+
+## Data Transformation
+
+
+
+## Data Analysis
+
+
+
+## Futur Work
+
+## Findings
+
+
+
 
 
