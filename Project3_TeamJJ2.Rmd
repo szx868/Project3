@@ -1,0 +1,273 @@
+---
+title: "Project3"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Data Science Skills
+
+**Team Triple J:** Jered Ataky, Zhouxin Shi, Irene Jacob
+
+## Project Overview:
+
+In this project, our goal is to be able to answer to the question:
+
+“Which are the most valued data science skills?” 
+
+As it is a group work and each member living in different time zone, we have 
+established a great way of communication, code sharing, and documentation to
+enable us to be successful and efficient while working virtually together.
+The tools used and data source explored are described below: 
+
+## Tools:
+
+We are using Github for code sharing. Github serves us also for data repository 
+although we intend to use MySQL (and/or AWS) as the project progresses.
+In the other, Slack and Microsoft Teams are used for communication as well
+project documentation.
+
+## Data Source:
+
+The data set we are working can be found in the link below:
+
+https://www.kaggle.com/elroyggj/indeed-dataset-data-scientistanalystengineer
+
+
+We also have it loaded as csv in our Github repository for project development:
+
+(https://github.com/szx868/Project3)
+
+## Libraries
+
+```{r}
+library(tidyverse)
+library(tidytext)
+library(kableExtra)
+library(tm)
+
+```
+
+## ER Diagram
+![](Entity_Relationship_Diagram.jpg "Image Title")
+
+
+
+## Work process & responsabilities
+
+```{r}
+
+Process <- c('Data Collection', 'Database Storage & Structure ',
+             'Data Transformation (Cleaning & Tidying data)',
+             'Data Analysis', 'Visualization',
+             'Review & Summary','Conclusion and Presentation')
+
+Team <- c('Zhouxin', 'Zhouxin & Jered', 'Jered & Irene', 
+          'Jered, Zhouxin, Irene', 'Irene', 'Jered',
+          'Jered, Zhouxin, Irene')
+
+df_team <- data.frame(Process, Team)
+
+names(df_team) <- c('Process', 'Team Members')
+
+df_team %>%
+  kbl(caption = "Work Process & Responsabilities") %>%
+  kable_material(c("striped", "hover")) %>%
+  row_spec(0, color = "indigo")
+
+
+```
+
+```{r}
+library(RMariaDB)
+# The connection method below uses a password stored in a variable.
+# To use this set localuserpassword="The password of newspaper_search_results_user"
+
+storiesDb <- dbConnect(RMariaDB::MariaDB(), user='root', password='Ja07071990', dbname='ds_skills', host='23.251.154.21')
+# dbListTables(storiesDb)
+query<- "SELECT * FROM indeed_job_dataset7;"
+rsInsert <- dbSendQuery(storiesDb, query)
+d1 <- dbFetch(rsInsert) # extract data in chunks of 10 rows
+# dbHasCompleted(rsInsert)
+d1
+
+
+```
+```{r}
+dbClearResult(rsInsert)
+dbDisconnect(storiesDb)
+
+```
+
+```{r}
+library(rvest)
+library(stringr)
+index <- 0
+Linkedin<-matrix(nrow=0,ncol=1)
+for(i in 1:30){
+  start <- index*25 
+  index <- index + 1
+  strlink =paste("https://www.linkedin.com/jobs/search/?geoId=103644278&keywords=data%20scientist&location=United%20States&start=", toString(start),sep="")
+
+  strhtml <- read_html(strlink)%>% html_nodes(".result-card__full-card-link") %>%html_attr('href')
+  tempmatrix <- as.matrix(strhtml)
+  Linkedin <- rbind(Linkedin,tempmatrix)
+  
+}
+#Linkedin %>%
+#html_nodes(".full-width") %>%
+#html_text()
+
+
+```
+
+```{r}
+Linkedin
+```
+
+
+```{r}
+  temphtml <- read_html(Linkedin[2])
+  job_desc <- temphtml %>%
+  html_nodes(".description__text") %>%
+  html_text()
+  print(job_desc)
+```
+
+```{r}
+  temphtml <- read_html(Linkedin[1])
+  job_desc <- temphtml %>%
+  html_nodes(".sub-nav-cta__sub-text-container") %>%
+  html_text()
+  print(job_desc)
+```
+```{r}
+length(Linkedin)
+```
+
+```{r}
+general.skill <- read.csv("https://raw.githubusercontent.com/szx868/Project3/master/data_skills.csv",header=T)
+
+names(general.skill) <- c('Soft', 'Reg.Soft','Hard','Reg.Hard')
+general.skill
+```
+```{r}
+str(general.skill)
+```
+```{r}
+nrow(general.skill)
+```
+
+```{r}
+for(i in nrow(general.skill)){
+  print(general.skill[2,1])
+}
+```
+
+```{r}
+tempstr <- "asdfaCreative adfas Thinkingfsa "
+str_detect(tempstr,pattern="creative.*Thinking")
+```
+```{r}
+nrow(Linkedin)
+```
+
+```{r}
+library(RMariaDB)
+# The connection method below uses a password stored in a variable.
+# To use this set localuserpassword="The password of newspaper_search_results_user"
+
+storiesDb <- dbConnect(RMariaDB::MariaDB(), user='root', password='Ja07071990', dbname='ds_skills', host='23.251.154.21')
+# dbListTables(storiesDb)
+
+
+
+# dbHasCompleted(rsInsert)
+
+
+df = data.frame(Skill = character(), Loc = character())
+for (i in 1:nrow(Linkedin)){
+ temphtml <- read_html(Linkedin[i])
+
+  job_desc <- temphtml %>%
+  html_nodes(".description__text") %>%
+  html_text()
+  print(job_desc)
+  job_loc <- temphtml %>%
+  html_nodes(".sub-nav-cta__sub-text-container") %>%
+  html_text()
+  
+  job_loc2 <- unlist(strsplit(job_loc, ","))
+  str(job_loc2[2])
+  if(nchar(str_trim(job_loc2[2]), keepNA=TRUE) > 2 ){
+    job_loc2[2] <- 'NA'
+  }
+  print(job_loc2[2])
+  job_skill <- '' 
+  for(i in 1:nrow(general.skill)){
+    if(general.skill[i,1]!=''){
+        if(str_detect(tolower(job_desc),tolower(general.skill[i,2])) == TRUE){
+          job_skill <- paste(job_skill,general.skill[i,1],sep=",")
+        }
+    }
+  }
+    for(i in 1:nrow(general.skill)){
+      if(general.skill[i,3]!=''){
+        if(str_detect(tolower(job_desc),tolower(general.skill[i,4])) == TRUE){
+          job_skill <- paste(general.skill[i,3],job_skill, sep=",")
+        }
+      }
+  }
+  query <- "INSERT INTO `Linkedin_dataset` (`job_url`,`job_site`,`job_skill`,`job_location`)VALUES('"
+  value <- c(str_trim(Linkedin[i]),'Linkedin',str_trim(job_skill),str_trim(job_loc2[2]))
+  value <- paste(value,collapse = "','")
+  query <- paste(query,value )
+  query <- paste(query, "');")
+  print(job_loc2[2])
+  rsInsert <- dbSendQuery(storiesDb, query)
+  dbClearResult(rsInsert)
+  #df <- rbind(df, data.frame(Skill =  job_skill , Loc = job_loc2[2] ))
+  
+}
+
+df
+```
+```{r}
+dbClearResult(rsInsert)
+dbDisconnect(storiesDb)
+
+```
+
+
+```{r}
+docs <- df$x
+
+```
+```{r}
+ps_dtm <- VectorSource(docs) %>%
+  VCorpus() %>%
+  DocumentTermMatrix(control = list(removePunctuation = TRUE,
+                                    removeNumbers = TRUE,
+                                    stopwords = TRUE))
+```
+
+```{r}
+inspect(ps_dtm)
+
+```
+
+
+```{r}
+ps_tidy <- tidy(ps_dtm)
+ps_tidy
+```
+
+
+
+
+
+
