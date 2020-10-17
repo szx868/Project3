@@ -3,6 +3,8 @@ title: "Project3"
 output:
   html_document: default
   pdf_document: default
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -91,12 +93,62 @@ storiesDb <- dbConnect(RMariaDB::MariaDB(), user='root', password='Ja07071990', 
 # dbListTables(storiesDb)
 query<- "SELECT * FROM indeed_job_dataset7;"
 rsInsert <- dbSendQuery(storiesDb, query)
-d1 <- dbFetch(rsInsert) # extract data in chunks of 10 rows
+Indeed <- dbFetch(rsInsert) # extract data in chunks of 10 rows
 # dbHasCompleted(rsInsert)
-d1
+Indeed
 
 
 ```
+
+```{r}
+for (i in 1:500){
+ 
+  
+  job_loc <- Indeed[i,4]
+  print(job_loc)
+  job_desc <- Indeed[i,1]
+  job_url <- Indeed[i,3]
+}
+```
+
+```{r}
+for (i in 1:500){
+ 
+  
+  job_loc <- Indeed[i,4]
+  job_desc <- Indeed[i,1]
+  job_url <- Indeed[i,3]
+  job_skill <- '' 
+  if(str_length(str_trim(job_loc)) > 2 ){
+      job_loc <- 'NA'
+    }
+  for(x in 1:nrow(general.skill)){
+    if(general.skill[x,1]!=''){
+        if(str_detect(tolower(job_desc),tolower(general.skill[x,2])) == TRUE){
+          job_skill <- paste(job_skill,general.skill[x,1],sep=",")
+        }
+    }
+  }
+    for(x in 1:nrow(general.skill)){
+      if(general.skill[x,3]!=''){
+        if(str_detect(tolower(job_desc),tolower(general.skill[x,4])) == TRUE){
+          job_skill <- paste(general.skill[x,3],job_skill, sep=",")
+        }
+      }
+  }
+  query <- "INSERT INTO `Linkedin_dataset` (`job_url`,`job_site`,`job_skill`,`job_location`)VALUES('"
+  value <- c(str_trim(job_url),'Indeed',str_trim(job_skill),str_trim(job_loc))
+  value <- paste(value,collapse = "','")
+  query <- paste(query,value )
+  query <- paste(query, "');")
+  rsInsert <- dbSendQuery(storiesDb, query)
+  dbClearResult(rsInsert)
+  #df <- rbind(df, data.frame(Skill =  job_skill , Loc = job_loc2[2] ))
+  
+}
+```
+
+
 ```{r}
 dbClearResult(rsInsert)
 dbDisconnect(storiesDb)
@@ -177,6 +229,12 @@ nrow(Linkedin)
 ```
 
 ```{r}
+for (i in 1:nrow(Linkedin)){
+  print(Linkedin[i])
+}
+```
+
+```{r}
 library(RMariaDB)
 # The connection method below uses a password stored in a variable.
 # To use this set localuserpassword="The password of newspaper_search_results_user"
@@ -190,7 +248,7 @@ storiesDb <- dbConnect(RMariaDB::MariaDB(), user='root', password='Ja07071990', 
 
 
 df = data.frame(Skill = character(), Loc = character())
-for (i in 1:nrow(Linkedin)){
+for (i in 1:500){
  temphtml <- read_html(Linkedin[i])
 
   job_desc <- temphtml %>%
@@ -202,28 +260,33 @@ for (i in 1:nrow(Linkedin)){
   html_text()
   
   job_loc2 <- unlist(strsplit(job_loc, ","))
-  str(job_loc2[2])
-  if(nchar(str_trim(job_loc2[2]), keepNA=TRUE) > 2 ){
-    job_loc2[2] <- 'NA'
+
+  print(str_length(str_trim(job_loc2[2])))
+  if(length(job_loc2)>=2){
+    if(str_length(str_trim(job_loc2[2])) > 2 ){
+      job_loc2[2] <- 'NA'
+    }
   }
   print(job_loc2[2])
+  
   job_skill <- '' 
-  for(i in 1:nrow(general.skill)){
-    if(general.skill[i,1]!=''){
-        if(str_detect(tolower(job_desc),tolower(general.skill[i,2])) == TRUE){
-          job_skill <- paste(job_skill,general.skill[i,1],sep=",")
+  job_url <- Linkedin[i]
+  for(x in 1:nrow(general.skill)){
+    if(general.skill[x,1]!=''){
+        if(str_detect(tolower(job_desc),tolower(general.skill[x,2])) == TRUE){
+          job_skill <- paste(job_skill,general.skill[x,1],sep=",")
         }
     }
   }
-    for(i in 1:nrow(general.skill)){
-      if(general.skill[i,3]!=''){
-        if(str_detect(tolower(job_desc),tolower(general.skill[i,4])) == TRUE){
-          job_skill <- paste(general.skill[i,3],job_skill, sep=",")
+    for(x in 1:nrow(general.skill)){
+      if(general.skill[x,3]!=''){
+        if(str_detect(tolower(job_desc),tolower(general.skill[x,4])) == TRUE){
+          job_skill <- paste(general.skill[x,3],job_skill, sep=",")
         }
       }
   }
   query <- "INSERT INTO `Linkedin_dataset` (`job_url`,`job_site`,`job_skill`,`job_location`)VALUES('"
-  value <- c(str_trim(Linkedin[i]),'Linkedin',str_trim(job_skill),str_trim(job_loc2[2]))
+  value <- c(str_trim(job_url),'Linkedin',str_trim(job_skill),str_trim(job_loc2[2]))
   value <- paste(value,collapse = "','")
   query <- paste(query,value )
   query <- paste(query, "');")
@@ -234,8 +297,9 @@ for (i in 1:nrow(Linkedin)){
   
 }
 
-df
 ```
+
+
 ```{r}
 dbClearResult(rsInsert)
 dbDisconnect(storiesDb)
