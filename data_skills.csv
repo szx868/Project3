@@ -1,11 +1,21 @@
-﻿Soft Skills,Hard Skills,Tools Skills
-Communication,Data Analysis,R Programming
-Collaboration,Mathematics,Python
-Creative Thinking,Statistics,NoSQL
-Critical Thinking,Data Visualization,Hadoop
-Problem Solving,Programming,OpenRefine
-Active Learning,Quantitative Analysis,TensorFlow
-Perceptiveness,Machine Learning,Matplotlib
-Generating Hypotheses,Debugging,Cloudera
-Judgement,Modeling,PERL
-Interpersonal Skills,Probability,VB
+﻿Soft.Skills,Reg.Soft,Hard.Skills,Reg.Hard
+Communication,Communication,Data Analysis,Data.*Analysis
+Collaboration,Collaboration,Mathematics,Mathematics
+Creative Thinking,Creative.*Thinking,Statistics,Statistics
+Critical Thinking,Critical.*Thinking,Data Visualization,Data.*Visualization
+Problem Solving,Problem.*Solving,Programming,Programming
+Active Learning,Active.*Learning,Quantitative Analysis,Quantitative.*Analysis
+Perceptiveness,Perceptiveness,Machine Learning,Machine.*Learning
+Generating Hypotheses,Generating.*Hypotheses,Debugging,Debugging
+Judgement,Judgement,Modeling,Modeling
+Interpersonal Skills,Interpersonal,Probability,Probability
+Business sense,Business,R Programming,R.*Programming
+,,Python,Python
+,,NoSQL,NoSQL
+,,Hadoop,Hadoop
+,,OpenRefine,OpenRefine
+,,TensorFlow,TensorFlow
+,,Matplotlib,Matplotlib
+,,Cloudera,Cloudera
+,,PERL,PERL
+,,VB,VB
