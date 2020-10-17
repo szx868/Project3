@@ -1,5 +1,6 @@
 ---
-title: "Project3"
+title: "DATA 606 Project 3"
+author: " Team Triple J: Jered Ataky, Zhouxin Shi, Irene Jacob"
 output:
   html_document: default
   pdf_document: default
@@ -26,8 +27,8 @@ The tools used and data source explored are described below:
 
 ## Tools:
 
-We are using Github for code sharing. Github serves us also for data repository 
-although we intend to use MySQL (and/or AWS) as the project progresses.
+We are using Github for code sharing, and Google Cloud Platform (GCP)
+for data base and storage.
 In the other, Slack and Microsoft Teams are used for communication as well
 project documentation.
 
@@ -42,19 +43,9 @@ We also have it loaded as csv in our Github repository for project development:
 
 (https://github.com/szx868/Project3)
 
-## Libraries
-
-```{r}
-library(tidyverse)
-library(kableExtra)
-
-
-```
 
 ## ER Diagram
 ![](Entity_Relationship_Diagram.jpg "Image Title")
-
-
 
 ## Work process & responsabilities
 
@@ -80,5 +71,101 @@ df_team %>%
 
 
 ```
+
+## Approach
+
+
+<style>
+div.aquamarine { background-color:#7fffd4; border-radius: 10px; padding: 5px;}
+</style>
+<div class = "aquamarine">
+
+We target a data set in kaggle and decided to work on.
+First, we create a database in MySQL and link it to our GCP data base to
+allow each one to access it locally and make any change if necessary.
+we reside our data in both the GCP data base and storage we created.
+At this point, we load the data from the cloud and start our analysis.
+
+
+</div> \hfill\break
+
+
+## Libraries
+
+```{r}
+library(tidyverse)
+library(kableExtra)
+library(rvest)
+library(stringr)
+library(xtable)
+library(tm)
+library(RMySQL)
+library(PGRdup)
+library(broom)
+library(googleCloudStorageR)
+library(readr)
+library(cloudml)
+
+```
+
+
+## Load the data
+
+```{r}
+
+raw_data <-read.csv("https://storage.googleapis.com/triplej_project3/indeed_job_dataset7.csv")
+
+```
+
+```{r}
+# data insight
+
+glimpse(raw_data)
+
+
+```
+
+
+
+## Data Cleansing
+
+
+
+### Clean skill
+
+```{r}
+
+# Remove bracket in skill
+
+data_raw <- raw_data %>%
+  separate(Skill, c("Alt", "new_skills"), sep = "^[\\[]", remove = TRUE, convert = FALSE) %>%
+  separate(new_skills, c("Skill", "Alt"), sep = "[\\]]$", remove = TRUE, convert = FALSE)
+
+data <- data_raw [c(1:3, 5)]
+head(data, 2)
+
+```
+
+### Clean description
+
+
+
+## Data Transformation
+
+
+
+## Data Analysis
+
+
+
+## Futur Work
+
+
+
+
+## Findings
+
+
+
 
 
